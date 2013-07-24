@@ -1,0 +1,8 @@
+<input type="range" data-control="frequency" min="220" max="1760" step="1" value="<%= frequency %>" />
+<input type="range" data-control="gain" min="0.0" max="1.0" step="0.01" value="<%= gain %>" />
+<select data-control="waveform">
+<% _.forEach(waveforms, function(type) { %>
+	<option value="<%= type %>"<% if (type == waveform) { %> selected="selected"<% } %>><%= type %></option>
+<% }) %>
+</select>
+<label for="paused">Paused <input type="checkbox" data-control="paused" <% if (paused) { %>checked="true"<% } %> /></label>
