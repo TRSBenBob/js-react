@@ -12,12 +12,15 @@ body {
 	min-height: 100px;
 	background: #eee;
 
-	padding: 1em;
-	margin: 1em;
+	padding: 3em 1em 1em;
 
 	box-shadow: 0.25em 0.25em 0.5em rgba(0,0,0,0.1),
 				0 0 1em rgba(0,0,0,0.125) inset,
 				0 0.5em 1em rgba(255,255,255,1) inset;
+
+	float: left;
+
+	cursor: -webkit-grab;
 }
 
 .oscillator input[type="range"],

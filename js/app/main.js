@@ -5,8 +5,12 @@ require(["jquery", "lodash"], function($, _) {
 		var context = new webkitAudioContext();
 
 		require(['controllers/oscillator', 'models/oscillator'], function(oscillatorController, oscillatorModel) {
-			var oscModel = new oscillatorModel();
-			var oscController = new oscillatorController({ model: oscModel, container: $('#nodes'), context: context });
+			for (var i = 0; i < 4; ++i) {
+				var model = new oscillatorModel({ frequency: 440 + ((i-2) * 4), waveform: 'sine' });
+				var oscController = new oscillatorController({ model: model, container: $('#nodes'), context: context });
+			}
 		});
+
+		console.info(context);
 	});
 });

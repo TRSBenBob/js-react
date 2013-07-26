@@ -1,4 +1,4 @@
-define('controllers/oscillator', ['jquery', 'lodash', 'ractive', 'text!views/oscillator.html!strip'], function($, _, Ractive, template) {
+define('controllers/oscillator', ['jquery', 'lodash', 'ractive', 'text!views/oscillator.html!strip', 'jquery-ui'], function($, _, Ractive, template) {
 	function OscillatorController(options) {
 		_.extend(this, options || {});
 
@@ -41,7 +41,19 @@ define('controllers/oscillator', ['jquery', 'lodash', 'ractive', 'text!views/osc
 			this.oscNode.connect(this.gainNode);
 			this.gainNode.connect(this.context.destination);
 
+			// pre-set node values
+			this.gainNode.gain.value = this.model.paused ? 0 : this.model.gain;
+			this.oscNode.type = this.model.waveform;
+			this.oscNode.frequency.value = this.model.frequency;
+
 			this.oscNode.start(0);
+
+			$(this.view.el).draggable({
+				containment: 'document',
+				snap: true,
+				snapMode: "both",
+				stack: '#nodes .oscillator',
+			});
 		}
 	});
 
