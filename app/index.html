@@ -112,14 +112,15 @@
 
 	<script>
 		window.togglePlayback = function() {
-		  if (this.dataset.paused == "true") {
-		    this.innerHTML = "Pause";
+		  var self = document.querySelector('#playback');
+		  if (self.dataset.paused == "true") {
+		    self.innerHTML = "Pause";
 		    T.play();
-		    this.dataset.paused = "false";
+		    self.dataset.paused = "false";
 		  } else {
-		    this.innerHTML = "Play";
+		    self.innerHTML = "Play";
 		    T.pause();
-		    this.dataset.paused = "true";
+		    self.dataset.paused = "true";
 		  }  
 		}
 
