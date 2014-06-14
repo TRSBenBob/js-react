@@ -3,6 +3,29 @@
 <head>
 	<title>JS ReacTable</title>
 
+	<style type="text/css">
+		* {
+			border-box: padding-box;
+		}
+
+		main {
+			width: 200px;
+		}
+
+		p {
+			background: #eef;
+		}
+
+		label {
+			display: block;
+		}
+
+		input {
+			width: 100%;
+			margin: 0;
+		}
+	</style>
+
 	<script>
 		if(typeof(webkitAudioContext)!=="undefined") {
 			if(typeof(webkitAudioContext.prototype.createGain)==="undefined") {
@@ -76,9 +99,79 @@
 	<script type="text/javascript" src="http://mohayonao.github.io/subcollider.js/builds/subcollider.js"></script>
 </head>
 <body>
-	Loading...
+	<main>
+		<p>
+			<button id="playback" data-paused="true">Play</button>    <button id="scale">Random Scale</button>
+		</p>
+
+		<p>
+			<label for="pitch">Pitch</label>
+			<input type="range" id="pitch" name="pitch" min="-24" max="24" step="0.1" value="1" />
+		</p>
+	</main>
+
 	<script>
-		document.write("Complete!");
+		window.togglePlayback = function() {
+		  if (this.dataset.paused == "true") {
+		    this.innerHTML = "Pause";
+		    T.play();
+		    this.dataset.paused = "false";
+		  } else {
+		    this.innerHTML = "Play";
+		    T.pause();
+		    this.dataset.paused = "true";
+		  }  
+		}
+
+		document.querySelector('#playback').addEventListener('click', togglePlayback);
+
+		function randomScale(count) {
+		  if (0) {
+		    scale = sc.ScaleInfo.at("majorPentatonic");
+		  } else {
+		    scale = sc.ScaleInfo.at("minorPentatonic");
+		  }
+		  
+		  scaleOffs = scale.degrees().choose(count % 4);
+		}
+
+		var domPitch = document.querySelector('#pitch');
+		var midicps = T("midicps");
+		var midicps2 = T("midicps");
+
+		var scale = sc.Scale.major();
+		var scaleOffs = 0;
+		document.querySelector('#scale').addEventListener('click', randomScale);
+
+		/*domPitch.addEventListener('input', function() {
+		  var gated = (parseFloat(this.value) + 69).nearestInScale(scale, 12);
+		  
+		  midicps.midi = gated + scaleOffs;
+		  this.value = gated - 69;
+		});*/
+
+		T("reverb", {room:0.9, damp:0.2, mix:0.45}, T("delay", {time:T.timevalue("bpm120 L4"), fb:0.6, mix:0.3}, T("chorus", {delay:10, rate:2, depth:10, fb:0.5, mix:0.35}, T("tri", {freq: midicps, mul:0.5})))).play();
+
+		T("chorus", {delay:10, rate:2, depth:10, fb:0.75, mix:0.5}, T("tri", {freq: midicps2, mul:0.8})).play();
+
+		T("interval", {interval:T.timevalue("bpm120 1.0.0")}, function(count) {
+		  randomScale(count);
+		}).on("ended", function() {
+		  this.stop();
+		}).start();
+
+		T("interval", {interval:T.timevalue("bpm120 0.0.120")}, function(count) {
+		  var gated = ((sc.triWindow((count % 6) / 6) * 18) + 69).nearestInScale(scale, 12);
+		  midicps.midi = gated + scaleOffs;
+		  if (count % 16 == 0) {
+		    midicps2.midi = gated + scaleOffs - 36;
+		  }
+		  domPitch.value = gated - 69;
+		}).on("ended", function() {
+		  this.stop();
+		}).start();
+
+		T.pause();
 	</script>
 </body>
 </html>
