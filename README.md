@@ -1,4 +1,4 @@
 js-react
 ========
 
-An attempt at recreating the ReacTable in HTML5, JS & CSS3
+JS powered ReacTable. Thanks to https://github.com/mohayonao/timbre for the incredible Web Audio library.
