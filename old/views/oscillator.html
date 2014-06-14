@@ -1,8 +1,0 @@
-<input type="range" min="220" max="1760" step="0.1" value="{{frequency}}" proxy-change="frequency" />
-<input type="range" min="0.0" max="1.0" step="0.01" value="{{gain}}" proxy-change="gain" />
-<select value="{{waveform}}" proxy-change="waveform">
-{{#waveforms}}
-	<option value="{{.}}">{{.}}</option>
-{{/waveforms}}
-</select>
-<label>{{#paused}}Paused{{/paused}}{{^paused}}Playing{{/paused}} <input type="checkbox" checked="{{paused}}" proxy-change="paused" /></label>
